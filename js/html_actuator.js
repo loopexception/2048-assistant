@@ -26,7 +26,7 @@ HTMLActuator.prototype.actuate = function (grid, metadata) {
     self.updateBestScore(metadata.bestScore);
 
     //Update the assistant's message to reflect the game state
-    self.updateStatusMessage();
+    self.updateStatusMessage(grid);
 
     if (metadata.terminated) {
       if (metadata.over) {
@@ -128,8 +128,8 @@ HTMLActuator.prototype.updateBestScore = function (bestScore) {
   this.bestContainer.textContent = bestScore;
 };
 
-HTMLActuator.prototype.updateStatusMessage = function () {
-  this.statusContainer.textContent = "No assistance needed.";
+HTMLActuator.prototype.updateStatusMessage = function (grid) {
+  this.statusContainer.textContent = "No assistance needed for " + grid.serialize();
 };
 
 HTMLActuator.prototype.message = function (won) {
