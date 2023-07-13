@@ -123,7 +123,7 @@ Grid.prototype.toArrayInt = function () {
     var row = cellValue[x] = [];
 
     for (var y = 0; y < this.size; y++) {
-      row.push(this.cells[x][y] ? this.cells[x][y].value : 0);
+      row.push(this.cells[y][x] ? this.cells[y][x].value : 0);
     }
   }
 
