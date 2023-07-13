@@ -129,7 +129,7 @@ HTMLActuator.prototype.updateBestScore = function (bestScore) {
 };
 
 HTMLActuator.prototype.updateStatusMessage = function (grid) {
-  this.statusContainer.textContent = "No assistance needed for " + grid.serialize();
+  this.statusContainer.textContent = "No assistance needed for " + grid.toArrayInt();
 };
 
 HTMLActuator.prototype.message = function (won) {
