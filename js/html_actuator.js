@@ -128,9 +128,32 @@ HTMLActuator.prototype.updateBestScore = function (bestScore) {
   this.bestContainer.textContent = bestScore;
 };
 
+HTMLActuator.prototype.isRowFull = function (grid_int, row_i) {
+  //grid_int is a 2D array representing the game board
+  //row_i is the row number 0 to N-1 from the top downwards
+  var row = grid_int[row_i];
+  var isFull = row.every(function(num) {
+    return num !== 0;
+  });
+  return isFull;
+};
+
 HTMLActuator.prototype.updateStatusMessage = function (grid) {
-  var v = grid.toArrayInt();
-  this.statusContainer.textContent = "No assistance needed for " + v[0] + ";" + v[1] + ";" + v[2] + ";" + v[3];
+  var BOTTOM_ROW = 3;
+  var msg = "No assistance needed";
+  var grid_int = grid.toArrayInt();
+  var bottomRow = grid_int[BOTTOM_ROW];
+  var bottomRowFull = this.isRowFull(grid_int, BOTTOM_ROW);
+
+  if (bottomRowFull) {
+    for (var i = 0; i < bottomRow.length-1; i++) {
+      if (bottomRow[i] === bottomRow[i + 1]) {
+        msg = "Bottom row ready to merge";
+      }
+    }
+  }
+
+  this.statusContainer.textContent = msg;
 };
 
 HTMLActuator.prototype.message = function (won) {
