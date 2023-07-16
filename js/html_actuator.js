@@ -1,4 +1,5 @@
 function HTMLActuator() {
+  this.mainContainer    = document.querySelector(".container");
   this.tileContainer    = document.querySelector(".tile-container");
   this.scoreContainer   = document.querySelector(".score-container");
   this.bestContainer    = document.querySelector(".best-container");
@@ -128,32 +129,87 @@ HTMLActuator.prototype.updateBestScore = function (bestScore) {
   this.bestContainer.textContent = bestScore;
 };
 
-HTMLActuator.prototype.isRowFull = function (grid_int, row_i) {
-  //grid_int is a 2D array representing the game board
-  //row_i is the row number 0 to N-1 from the top downwards
-  var row = grid_int[row_i];
-  var isFull = row.every(function(num) {
+HTMLActuator.prototype.isRowEmpty = function (grid_int_row) {
+  //grid_int_row is a 1-D array representing one row of the game board
+  var isEmpty = grid_int_row.every(function(num) {
+    return num == 0;
+  });
+  return isEmpty;
+};
+
+HTMLActuator.prototype.isRowFull = function (grid_int_row) {
+  //grid_int_row is a 1-D array representing one row of the game board
+  var isFull = grid_int_row.every(function(num) {
     return num !== 0;
   });
   return isFull;
 };
 
+HTMLActuator.prototype.countEmptySpaces = function (grid_int_row) {
+  //grid_int_row is a 1-D array representing one row of the game board
+  var emptySpaces = 0;
+
+  for (var i = 0; i < grid_int_row.length; i++) {
+    if (grid_int_row[i] == 0) {
+      emptySpaces++;
+    }
+  }
+  return emptySpaces;
+};
+
 HTMLActuator.prototype.updateStatusMessage = function (grid) {
   var BOTTOM_ROW = 3;
+  var NORMAL_COLOUR = "#faf8ef";
+  var WARNING_COLOUR = "#eeee33";
   var msg = "No assistance needed";
   var grid_int = grid.toArrayInt();
   var bottomRow = grid_int[BOTTOM_ROW];
-  var bottomRowFull = this.isRowFull(grid_int, BOTTOM_ROW);
+  var bottomRowFull = this.isRowFull(grid_int[BOTTOM_ROW]);
+  var topRowEmpty = this.isRowEmpty(grid_int[0]);
+  var secondRowEmpty = this.isRowEmpty(grid_int[1]);
+  var spacesCount = 0;
+  var warning = false;
+
+  if (topRowEmpty) {
+    //check for a lack of space on 2nd and 3rd rows, which could force a move upwards
+    if ( ! secondRowEmpty) {
+      spacesCount += this.countEmptySpaces(grid_int[1]);
+    }
+    spacesCount += this.countEmptySpaces(grid_int[2]);
+    if (spacesCount <= 2) {
+      msg = "Lack of spaces (" + spacesCount;
+      warning = true;
+      if (spacesCount == 1) {
+        msg += " space)";
+      } else {
+        msg += " spaces)";
+      }
+    }
+  }
+
+  if ((this.countEmptySpaces(grid_int[0]) == 3) &&
+      (this.countEmptySpaces(grid_int[1]) == 0) &&
+      (this.countEmptySpaces(grid_int[2]) == 0)) {
+    msg = "Potential lack of space if you move the top number downwards";
+    warning = true;
+  }
 
   if (bottomRowFull) {
     for (var i = 0; i < bottomRow.length-1; i++) {
       if (bottomRow[i] === bottomRow[i + 1]) {
         msg = "Bottom row ready to merge";
+        warning = true;
       }
     }
   }
 
   this.statusContainer.textContent = msg;
+  if (warning) {
+    //this.mainContainer.style.backgroundColor = WARNING_COLOUR;
+    document.body.style.backgroundColor = WARNING_COLOUR;
+  } else {
+    document.body.style.backgroundColor = NORMAL_COLOUR;
+  }
 };
 
 HTMLActuator.prototype.message = function (won) {
