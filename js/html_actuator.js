@@ -161,6 +161,7 @@ HTMLActuator.prototype.updateStatusMessage = function (grid) {
   var BOTTOM_ROW = 3;
   var NORMAL_COLOUR = "#faf8ef";
   var WARNING_COLOUR = "#eeee33";
+  var ALARM_COLOUR = "#ee3333";
   var msg = "No assistance needed";
   var grid_int = grid.toArrayInt();
   var bottomRow = grid_int[BOTTOM_ROW];
@@ -169,8 +170,16 @@ HTMLActuator.prototype.updateStatusMessage = function (grid) {
   var secondRowEmpty = this.isRowEmpty(grid_int[1]);
   var spacesCount = 0;
   var warning = false;
+  var alarm = false;
+  var bottomRowMergePossible = false;
 
-  if (topRowEmpty) {
+  for (var i = 0; i < bottomRow.length-1; i++) {
+    if ((bottomRow[i] != 0) && (bottomRow[i] == bottomRow[i+1])) {
+      bottomRowMergePossible = true;
+    }
+  }
+
+  if (topRowEmpty && bottomRowFull) {
     //check for a lack of space on 2nd and 3rd rows, which could force a move upwards
     if ( ! secondRowEmpty) {
       spacesCount += this.countEmptySpaces(grid_int[1]);
@@ -194,18 +203,25 @@ HTMLActuator.prototype.updateStatusMessage = function (grid) {
     warning = true;
   }
 
-  if (bottomRowFull) {
-    for (var i = 0; i < bottomRow.length-1; i++) {
-      if (bottomRow[i] === bottomRow[i + 1]) {
-        msg = "Bottom row ready to merge";
-        warning = true;
-      }
+  if (bottomRowFull && bottomRowMergePossible) {
+    msg = "Bottom row ready to merge";
+    warning = true;
+  }
+
+  if ((this.countEmptySpaces(grid_int[0]) > 0) &&
+      (this.countEmptySpaces(grid_int[1]) > 0) &&
+      (this.countEmptySpaces(grid_int[2]) > 0)) {
+    if (bottomRowMergePossible && (grid_int[3][0] >= 64)) {
+      //bottom row merge is possible and there is a danger of forced move to the right
+      msg = "Bottom row ready to merge but try to keep it full";
+      alarm = true;
     }
   }
 
   this.statusContainer.textContent = msg;
-  if (warning) {
-    //this.mainContainer.style.backgroundColor = WARNING_COLOUR;
+  if (alarm) {
+    document.body.style.backgroundColor = ALARM_COLOUR;
+  } else if (warning) {
     document.body.style.backgroundColor = WARNING_COLOUR;
   } else {
     document.body.style.backgroundColor = NORMAL_COLOUR;
