@@ -215,14 +215,13 @@ HTMLActuator.prototype.updateStatusMessage = function (grid) {
   }
 
   if ((this.countEmptySpaces(grid_int[0]) == 3) &&
-      ((this.countEmptySpaces(grid_int[1]) == 0) || (this.countEmptySpaces(grid_int[1]) == 4)) &&
-      (this.countEmptySpaces(grid_int[2]) <= 1)) {
+      (this.countEmptySpaces(grid_int[1]) + this.countEmptySpaces(grid_int[2]) <= 1)) {
     msg = "Potential lack of space if you move the top number downwards";
     warning = true;
   }
 
-  if ((this.countEmptySpaces(grid_int[0]) == 0) &&
-      (this.countEmptySpaces(grid_int[1]) == 1) &&
+  if ((this.countEmptySpaces(grid_int[0]) == 4) &&
+      (this.countEmptySpaces(grid_int[1]) == 3) &&
       (this.countEmptySpaces(grid_int[2]) <= 1)) {
     msg = "Potential lack of space if you move the top number downwards";
     warning = true;
