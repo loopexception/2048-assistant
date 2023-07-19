@@ -171,7 +171,25 @@ HTMLActuator.prototype.updateStatusMessage = function (grid) {
   var spacesCount = 0;
   var warning = false;
   var alarm = false;
+  var anyMergePossible = false;
   var bottomRowMergePossible = false;
+
+  for (var i = 0; i < grid_int.length; i++) {
+    for (var j = 0; j < grid_int[i].length-1; j++) {
+      //check row i
+      if ((grid_int[i][j] != 0) && (grid_int[i][j] == grid_int[i][j+1])) {
+        anyMergePossible = true;
+      }
+    }
+  }
+  for (var i = 0; i < grid_int.length; i++) {
+    for (var j = 0; j < grid_int[i].length-1; j++) {
+      //check column i
+      if ((grid_int[j][i] != 0) && (grid_int[j][i] == grid_int[j+1][i])) {
+        anyMergePossible = true;
+      }
+    }
+  }
 
   for (var i = 0; i < bottomRow.length-1; i++) {
     if ((bottomRow[i] != 0) && (bottomRow[i] == bottomRow[i+1])) {
@@ -185,7 +203,7 @@ HTMLActuator.prototype.updateStatusMessage = function (grid) {
       spacesCount += this.countEmptySpaces(grid_int[1]);
     }
     spacesCount += this.countEmptySpaces(grid_int[2]);
-    if (spacesCount <= 1) {
+    if ((spacesCount <= 1) || ((spacesCount <= 2) && ! anyMergePossible)) {
       msg = "Lack of spaces (" + spacesCount;
       warning = true;
       if (spacesCount == 1) {
