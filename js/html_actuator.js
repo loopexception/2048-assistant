@@ -221,8 +221,10 @@ HTMLActuator.prototype.updateStatusMessage = function (grid) {
   this.statusContainer.textContent = msg;
   if (alarm) {
     document.body.style.backgroundColor = ALARM_COLOUR;
+    window.alert("Alarm");
   } else if (warning) {
     document.body.style.backgroundColor = WARNING_COLOUR;
+    window.alert("Warning");
   } else {
     document.body.style.backgroundColor = NORMAL_COLOUR;
   }
