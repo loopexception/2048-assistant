@@ -197,13 +197,13 @@ HTMLActuator.prototype.updateStatusMessage = function (grid) {
     }
   }
 
-  if (topRowEmpty && bottomRowFull) {
+  if (topRowEmpty && bottomRowFull && ! anyMergePossible) {
     //check for a lack of space on 2nd and 3rd rows, which could force a move upwards
     if ( ! secondRowEmpty) {
       spacesCount += this.countEmptySpaces(grid_int[1]);
     }
     spacesCount += this.countEmptySpaces(grid_int[2]);
-    if ((spacesCount <= 1) || ((spacesCount <= 2) && ! anyMergePossible)) {
+    if (spacesCount <= 2) {
       msg = "Lack of spaces (" + spacesCount;
       warning = true;
       if (spacesCount == 1) {
