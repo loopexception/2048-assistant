@@ -185,7 +185,7 @@ HTMLActuator.prototype.updateStatusMessage = function (grid) {
       spacesCount += this.countEmptySpaces(grid_int[1]);
     }
     spacesCount += this.countEmptySpaces(grid_int[2]);
-    if (spacesCount <= 2) {
+    if (spacesCount <= 1) {
       msg = "Lack of spaces (" + spacesCount;
       warning = true;
       if (spacesCount == 1) {
