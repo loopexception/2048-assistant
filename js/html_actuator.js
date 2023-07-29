@@ -227,6 +227,14 @@ HTMLActuator.prototype.updateStatusMessage = function (grid) {
     warning = true;
   }
 
+  if ((this.countEmptySpaces(grid_int[0]) == 4) &&
+      (this.countEmptySpaces(grid_int[1]) == 0) &&
+      (this.countEmptySpaces(grid_int[2]) == 0) &&
+      (this.countEmptySpaces(grid_int[3]) == 0)) {
+    msg = "Lack of space";
+    alarm = true;
+  }
+
   if (bottomRowFull && bottomRowMergePossible && (grid_int[3][0] > 64)) {
     msg = "Bottom row ready to merge";
     warning = true;
