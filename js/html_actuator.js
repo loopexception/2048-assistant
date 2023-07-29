@@ -220,9 +220,12 @@ HTMLActuator.prototype.updateStatusMessage = function (grid) {
     warning = true;
   }
 
-  if ((this.countEmptySpaces(grid_int[0]) == 4) &&
+  if (( ! anyMergePossible) &&
+      (grid_int[3][0] > 256) &&
+      (this.countEmptySpaces(grid_int[0]) == 4) &&
       (this.countEmptySpaces(grid_int[1]) == 3) &&
-      (this.countEmptySpaces(grid_int[2]) <= 1)) {
+      (this.countEmptySpaces(grid_int[2]) <= 1) &&
+      (this.countEmptySpaces(grid_int[3]) <= 0)) {
     msg = "Potential lack of space if you move the top number downwards";
     warning = true;
   }
@@ -235,7 +238,7 @@ HTMLActuator.prototype.updateStatusMessage = function (grid) {
     alarm = true;
   }
 
-  if (bottomRowFull && bottomRowMergePossible && (grid_int[3][0] > 64)) {
+  if (bottomRowFull && bottomRowMergePossible && (grid_int[3][0] > 256)) {
     msg = "Bottom row ready to merge";
     warning = true;
   }
@@ -243,7 +246,7 @@ HTMLActuator.prototype.updateStatusMessage = function (grid) {
   if ((this.countEmptySpaces(grid_int[0]) > 0) &&
       (this.countEmptySpaces(grid_int[1]) > 0) &&
       (this.countEmptySpaces(grid_int[2]) > 0)) {
-    if (bottomRowMergePossible && (grid_int[3][0] > 64)) {
+    if (bottomRowMergePossible && (grid_int[3][0] > 256)) {
       //bottom row merge is possible and there is a danger of forced move to the right
       msg = "Bottom row ready to merge but try to keep it full";
       alarm = true;
