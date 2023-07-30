@@ -231,6 +231,15 @@ HTMLActuator.prototype.updateStatusMessage = function (grid) {
     warning = true;
   }
 
+  if ((grid_int[3][0] > 256) &&
+      (this.countEmptySpaces(grid_int[0]) == 4) &&
+      (this.countEmptySpaces(grid_int[1]) == 0) &&
+      (this.countEmptySpaces(grid_int[2]) <= 1) &&
+      (this.countEmptySpaces(grid_int[3]) <= 0)) {
+    msg = "Potential lack of space if you move downwards";
+    warning = true;
+  }
+
   if ((this.countEmptySpaces(grid_int[0]) == 4) &&
       (this.countEmptySpaces(grid_int[1]) == 0) &&
       (this.countEmptySpaces(grid_int[2]) == 0) &&
