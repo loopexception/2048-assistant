@@ -221,13 +221,6 @@ HTMLActuator.prototype.updateStatusMessage = function (grid) {
     warning = true;
   }
 
-  if (anyMergePossible &&
-      (this.countEmptySpaces(grid_int[0]) == 3) &&
-      (this.countEmptySpaces(grid_int[1]) + this.countEmptySpaces(grid_int[2]) == 0)) {
-    msg = "Potential lack of space if you move the top number downwards";
-    warning = true;
-  }
-
   if (( ! anyMergePossible) &&
       (grid_int[3][0] > 256) &&
       (this.countEmptySpaces(grid_int[0]) == 4) &&
