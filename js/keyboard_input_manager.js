@@ -47,7 +47,7 @@ KeyboardInputManager.prototype.listen = function () {
     //DISABLED 87: 0, // W - Up
     68: 1, // D - Right
     83: 2, // S - Down
-    65: 3  // A - Left
+    65: 3, // A - Left
     88:  1, // X - Right
     90:  2, // Z - Down
     220: 3  // \ - Left
