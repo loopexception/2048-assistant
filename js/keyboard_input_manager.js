@@ -34,6 +34,7 @@ KeyboardInputManager.prototype.emit = function (event, data) {
 KeyboardInputManager.prototype.listen = function () {
   var self = this;
 
+  //translate various key codes to up/down/left/right
   var map = {
     38: 0, // Up
     39: 1, // Right
@@ -43,10 +44,13 @@ KeyboardInputManager.prototype.listen = function () {
     76: 1, // Vim right
     74: 2, // Vim down
     72: 3, // Vim left
-    87: 0, // W
-    68: 1, // D
-    83: 2, // S
-    65: 3  // A
+    //DISABLED 87: 0, // W - Up
+    68: 1, // D - Right
+    83: 2, // S - Down
+    65: 3  // A - Left
+    88:  1, // X - Right
+    90:  2, // Z - Down
+    220: 3  // \ - Left
   };
 
   // Respond to direction keys
@@ -62,10 +66,10 @@ KeyboardInputManager.prototype.listen = function () {
       }
     }
 
-    // R key restarts the game
-    if (!modifiers && event.which === 82) {
-      self.restart.call(self, event);
-    }
+    //DISABLED  R key restarts the game
+    //if (!modifiers && event.which === 82) {
+    //  self.restart.call(self, event);
+    //}
   });
 
   // Respond to button presses
